@@ -24,9 +24,9 @@ public class AlumnoDaoImplementacion implements AlumnoDao {
 	}
 
 	@Override
-	public int aniadir(Alumno alu) throws SQLException {
+	public int aniadir(Alumno alu){
 		String sql = """
-					INSERT INTO alumno (nombre, apellidos, fecha_nacimiento, email, grupo)
+					INSERT INTO alumnos (nombre, apellidos, fecha_nacimiento, email, grupo)
 					VALUES (?, ?, ?, ?, ?);
 				""";
 
@@ -42,11 +42,15 @@ public class AlumnoDaoImplementacion implements AlumnoDao {
 
 			return result;
 		}
+		catch (SQLException e) {
+	        System.out.println("Error al añadir: " + e.getMessage());
+	        return -1;
+	    }
 
 	}
 
 	@Override
-	public Alumno obtenerPorElId(int id) throws SQLException {
+	public Alumno obtenerPorElId(int id) {
 		Alumno result = null;
 		String sql = """
 				SELECT id_alumno, nombre, apellidos, fechaNacimiento, email, grupo
@@ -60,7 +64,7 @@ public class AlumnoDaoImplementacion implements AlumnoDao {
 			try (ResultSet rs = pstm.executeQuery()) {
 				while (rs.next()) {
 					result = new Alumno();
-					result = new Alumno();
+					
 					result.setId_alumno(rs.getInt("id_alumno"));
 					result.setNombre(rs.getString("nombre"));
 					result.setApellidos(rs.getString("apellidos"));
@@ -68,14 +72,22 @@ public class AlumnoDaoImplementacion implements AlumnoDao {
 					result.setEmail(rs.getString("email"));
 					result.setGrupo(rs.getInt("grupo"));
 				}
+				return result;
 			}
+			catch (SQLException e) {
+		        System.out.println("Error al obtener: " + e.getMessage());
+		        return null;
+		    }
 
-		}
-		return result;
+		} catch (SQLException e) {
+	        System.out.println("Error al obtener: " + e.getMessage());
+	        return null;
+	    }
+	
 	}
 
 	@Override
-	public List<Alumno> obtenerTodos() throws SQLException {
+	public List<Alumno> obtenerTodos() {
 		String sql = """
 				SELECT id_alumno, nombre, apellidos, fechaNacimiento, email, grupo
 				FROM alumnos
@@ -96,16 +108,20 @@ public class AlumnoDaoImplementacion implements AlumnoDao {
 				alu.setGrupo(rs.getInt("grupo"));
 				result.add(alu);
 			}
+			return result;
 			
-		}
-		return result;
+		}catch (SQLException e) {
+	        System.out.println("Error al obtener: " + e.getMessage());
+	        return null;
+	    }
+		
 	}
 
 	@Override
-	public int modificar(Alumno alu) throws SQLException {
+	public int modificar(Alumno alu)  {
 		String sql = """
 				UPDATE alumno SET
-					nombre = ?, apellidos = ?, fechaNacimiento = ?, email = ?, grupo = ? WHERE id_empleado = ?
+					nombre = ?, apellidos = ?, fechaNacimiento = ?, email = ?, grupo = ? WHERE id_alumno = ?
 				""";
 		int result;
 		
@@ -117,13 +133,19 @@ public class AlumnoDaoImplementacion implements AlumnoDao {
 			pstm.setString(4, alu.getEmail());
 			pstm.setInt(5, alu.getGrupo());
 			
+			pstm.setInt(6, alu.getId_alumno());
 			result = pstm.executeUpdate();
+			return result;
 		} 
-		return result;
+		catch (SQLException e) {
+	        System.out.println("Error al modificar: " + e.getMessage());
+	        return -1;
+	    }
+		
 	}
 
 	@Override
-	public void borrar(int id) throws SQLException {
+	public void borrar(int id) {
 		String sql = """
 				DELETE FROM alumno WHERE id_alumno = ?
 				""";
@@ -133,6 +155,9 @@ public class AlumnoDaoImplementacion implements AlumnoDao {
 			pstm.executeUpdate();
 			
 		} 
+		catch (SQLException e) {
+	        System.out.println("Error al obtener: " + e.getMessage());
+	    }
 
 	}
 

@@ -5,13 +5,13 @@ import java.util.List;
 
 public interface AlumnoDao {
 	
-	int aniadir(Alumno alu) throws SQLException;
+	int aniadir(Alumno alu)  ;
 	
-	Alumno obtenerPorElId(int id) throws SQLException;
+	Alumno obtenerPorElId(int id)  ;
 	
-	List<Alumno> obtenerTodos() throws SQLException;
+	List<Alumno> obtenerTodos()  ;
 	
-	int modificar(Alumno alu) throws SQLException;
+	int modificar(Alumno alu)  ;
 	
-	void borrar(int id) throws SQLException;
+	void borrar(int id)  ;
 }
