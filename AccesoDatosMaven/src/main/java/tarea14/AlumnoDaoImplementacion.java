@@ -26,7 +26,7 @@ public class AlumnoDaoImplementacion implements AlumnoDao {
 	@Override
 	public int aniadir(Alumno alu){
 		String sql = """
-					INSERT INTO alumnos (nombre, apellidos, fecha_nacimiento, email, grupo)
+					INSERT INTO alumno (nombre, apellidos, fechaNacimiento, email, grupo)
 					VALUES (?, ?, ?, ?, ?);
 				""";
 
@@ -54,7 +54,7 @@ public class AlumnoDaoImplementacion implements AlumnoDao {
 		Alumno result = null;
 		String sql = """
 				SELECT id_alumno, nombre, apellidos, fechaNacimiento, email, grupo
-				FROM alumnos
+				FROM alumno
 				WHERE id_alumno = ?
 				""";
 		try (Connection conn = MyDataSource.getConnection(); PreparedStatement pstm = conn.prepareStatement(sql)) {
@@ -90,7 +90,7 @@ public class AlumnoDaoImplementacion implements AlumnoDao {
 	public List<Alumno> obtenerTodos() {
 		String sql = """
 				SELECT id_alumno, nombre, apellidos, fechaNacimiento, email, grupo
-				FROM alumnos
+				FROM alumno
 				""";
 		List<Alumno> result = new ArrayList<Alumno>();
 
