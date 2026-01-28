@@ -3,18 +3,20 @@ package tarea15;
 import java.util.List;
 
 public interface AlumnosDao {
-	
-	void insertarAlumno(Alumno alu);
 
-	void insertarGrupo(Grupo grupo);
+	int insertarAlumno(Alumno alu);
 
-	List<Alumno> obtenerTodos(); 
+	int insertarGrupo(Grupo grupo);
 
-	void modificarNombre(int id, String nombre);
+	List<Alumno> obtenerTodos();
 
-	void eliminarAlumno(int id);
+	List<String> obtenerCursos();
 
-	void eliminarPorCurso(String curso);
+	int modificarNombre(int id, String nombre);
+
+	int eliminarAlumno(int id);
+
+	int eliminarPorCurso(String curso);
 
 	void exportarFichero();
 

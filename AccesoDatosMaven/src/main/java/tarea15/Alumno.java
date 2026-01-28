@@ -16,6 +16,15 @@ public class Alumno {
 
 	}
 
+	public Alumno(String nombre, String apellidos, LocalDate fechaNacimiento, String email, int grupo, char genero) {
+		this.nombre = nombre;
+		this.apellidos = apellidos;
+		this.fechaNacimiento = fechaNacimiento;
+		this.email = email;
+		this.grupo = grupo;
+		this.genero = genero;
+	}
+
 	public Alumno(int id_alumno, String nombre, String apellidos, LocalDate fechaNacimiento, String email, int grupo,
 			char genero) {
 		super();

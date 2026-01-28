@@ -64,7 +64,7 @@ public class Menu {
 
 	}
 
-	static public void mostrarMenuTexto() {
+	 public void mostrarMenuTexto() {
 		System.out.println("Eige una opcion:" + "\n1. Insertar alumno" + "\n2. Listar alumnos (Consola)"
 				+ "\n3. Exportar a fichero (Texto/Bin)" + "\n4. Importar fichero a BD"
 				+ "\n5. Modificar nombre (por ID)" + "\n6. Eliminar alumno (por ID)" + "\n7. Eliminar por apellido"
@@ -72,7 +72,7 @@ public class Menu {
 		System.out.print("Pon un número: ");
 	}
 
-	public static void insertarAlumno() {
+	public  void insertarAlumno() {
 		System.out.println("Dame su nia (int):");
 
 		int nia = sc.nextInt();
@@ -115,7 +115,7 @@ public class Menu {
 
 	}
 
-	public static void mostrarTodosAlumnos() {
+	public  void mostrarTodosAlumnos() {
 		String sql = "SELECT * FROM alumno";
 		try {
 			Connection conn = Conexion.conectar();
@@ -150,7 +150,7 @@ public class Menu {
 		}
 	}
 
-	static public void exportarFichero() {
+	 public void exportarFichero() {
 		String nombrearchivo = "alumnos.txt";
 		String sql = "Select * from alumno";
 		try (Connection conn = Conexion.conectar(); PrintWriter pw = new PrintWriter(new FileWriter(nombrearchivo));) {
@@ -178,7 +178,7 @@ public class Menu {
 		}
 	}
 
-	static public void importarFichero() {
+	 public void importarFichero() {
 		String archivo = "alumnos.txt";
 		try (BufferedReader br = new BufferedReader(new FileReader(archivo));
 				Connection conn = Conexion.conectar();
@@ -213,7 +213,7 @@ public class Menu {
 		}
 	}
 
-	public static void modificarNombre() {
+	public  void modificarNombre() {
 		System.out.println("Dame su nia");
 		int nia = sc.nextInt();
 		sc.nextLine();
@@ -233,7 +233,7 @@ public class Menu {
 		}
 	}
 
-	public static void eliminarAlumno() {
+	public  void eliminarAlumno() {
 		sc.nextLine();
 		System.out.println("Dime el nia del alumno para borrarlo");
 		int nia = sc.nextInt();
@@ -252,7 +252,7 @@ public class Menu {
 
 	}
 
-	public static void eliminarPorApellido() {
+	public  void eliminarPorApellido() {
 		System.out.println("Escribe lo que tenga que contener el apellido para borralo");
 		sc.nextLine();
 		String trozo = sc.nextLine();
@@ -269,7 +269,7 @@ public class Menu {
 		}
 	}
 
-	public static void exportarJSON() {
+	public  void exportarJSON() {
 		String sql = "Select * from alumno";
 		String archivo = "alumnos.json";
 		List<Alumno> alumnillos = new ArrayList<>();
@@ -301,7 +301,7 @@ public class Menu {
 		}
 	}
 
-	public static void importarJson() {
+	public  void importarJson() {
 		String archivo = "alumnos.json";
 		try (BufferedReader br = new BufferedReader(new FileReader(archivo));
 				Connection conn = Conexion.conectar();
