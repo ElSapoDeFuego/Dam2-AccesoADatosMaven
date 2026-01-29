@@ -14,7 +14,7 @@ import com.zaxxer.hikari.HikariDataSource;
 
 public class MyDataSource {
 	private static final Logger logger = LogManager.getLogger();
-	private static HikariConfig config = new HikariConfig(AlumnosDB);
+	private static HikariConfig config = new HikariConfig(AlumnoDaoImplementacion);
 	private static HikariDataSource dataSource;
 	static {
 		Properties props = new Properties();

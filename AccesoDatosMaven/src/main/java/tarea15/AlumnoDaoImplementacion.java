@@ -19,7 +19,7 @@ public class AlumnoDaoImplementacion implements AlumnosDao {
 		instancia = new AlumnoDaoImplementacion();
 	}
 
-	private AlumnoDaoImplementacion() {
+	public AlumnoDaoImplementacion() {
 	}
 
 	public static AlumnoDaoImplementacion obtenerInstancia() {
