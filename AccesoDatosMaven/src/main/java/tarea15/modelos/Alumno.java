@@ -1,4 +1,4 @@
-package tarea15;
+package tarea15.modelos;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -11,6 +11,7 @@ public class Alumno {
 	private String email;
 	private int grupo;
 	private char genero;
+	private String nombreGrupo; // este atributo esta solo aqui en java para aclarar que grupo es
 
 	public Alumno() {
 
@@ -46,7 +47,15 @@ public class Alumno {
 	public String toString() {
 		return "Alumno [id_alumno=" + id_alumno + ", nombre=" + nombre + ", apellidos=" + apellidos
 				+ ", fechaNacimiento=" + fechaNacimiento + ", email=" + email + ", grupo=" + grupo + ", genero="
-				+ genero + "]";
+				+ genero + ", nombreGrupo=" + nombreGrupo + "]";
+	}
+
+	public String getNombreGrupo() {
+		return nombreGrupo;
+	}
+
+	public void setNombreGrupo(String nombreGrupo) {
+		this.nombreGrupo = nombreGrupo;
 	}
 
 	public int getId_alumno() {

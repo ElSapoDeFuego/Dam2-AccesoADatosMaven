@@ -1,4 +1,4 @@
-package tarea15;
+package tarea15.bbdd;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,8 +13,8 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 public class MyDataSource {
-	private static final Logger logger = LogManager.getLogger();
-	private static HikariConfig config = new HikariConfig(AlumnoDaoImplementacion);
+	private static final Logger logger = LogManager.getLogger(MyDataSource.class);
+	private static HikariConfig config = new HikariConfig();
 	private static HikariDataSource dataSource;
 	static {
 		Properties props = new Properties();

@@ -1,8 +1,11 @@
-package tarea15;
+package tarea15.interfazUsuario;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
+
+import tarea15.modelos.Alumno;
+import tarea15.modelos.Grupo;
 
 public class Vista implements InterfazVista {
 	private Scanner sc = new Scanner(System.in);
@@ -90,9 +93,32 @@ public class Vista implements InterfazVista {
 		} else {
 			for (Alumno a : alumnos) {
 				System.out.println("NIA: " + a.getId_alumno() + " | Nombre: " + a.getNombre() + " " + a.getApellidos()
-						+ " | Grupo: " + a.getGrupo());
+						+ " | Grupo: " + a.getNombreGrupo() + " (ID: " + a.getGrupo() + ")");
 			}
 		}
 
+	}
+
+	@Override
+	public String pedirPatronApellido() {
+		System.out.print("Introduce el apellido (o parte) a buscar: ");
+		String apellido = sc.nextLine();
+	    return apellido;
+	}
+
+	@Override
+	public Grupo pedirDatosGrupo() {
+		System.out.println("\n--- DATOS DEL NUEVO GRUPO ---");
+	    
+	    System.out.print("Nombre del grupo (ej: DAM1): ");
+	    String nombre = sc.nextLine();
+	    
+	    System.out.print("Ciclo (ej: Grado Superior): ");
+	    String ciclo = sc.nextLine();
+	    
+	    System.out.print("Curso (ej: 2025/26): ");
+	    String curso = sc.nextLine();
+	    
+	    return new Grupo(nombre, ciclo, curso);
 	}
 }

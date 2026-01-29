@@ -1,6 +1,9 @@
-package tarea15;
+package tarea15.bbdd;
 
 import java.util.List;
+
+import tarea15.modelos.Alumno;
+import tarea15.modelos.Grupo;
 
 public interface AlumnosDao {
 
@@ -16,13 +19,20 @@ public interface AlumnosDao {
 
 	int eliminarAlumno(int id);
 
+	int eliminarPorApellido(String patron);
+
 	int eliminarPorCurso(String curso);
 
 	void exportarFichero();
 
 	void importarFichero();
 
-	void exportarJSON();
+	void exportarAlumnosJSON();
 
-	void importarJSON();
+	void importarAlumnosJSON();
+	
+	void exportarGruposJSON();
+
+
+	void importarGruposJSON();
 }

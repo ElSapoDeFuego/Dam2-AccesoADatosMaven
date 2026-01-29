@@ -1,5 +1,6 @@
-package tarea15;
+package tarea15.modelos;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Grupo {
@@ -7,17 +8,43 @@ public class Grupo {
 	private String nombre;
 	private String ciclo;
 	private String curso;
+	private List<Alumno> alumnos;
 
 	public Grupo() {
 		super();
 	}
 
+	public Grupo(String nombre, String ciclo, String curso) {
+		super();
+		this.nombre = nombre;
+		this.ciclo = ciclo;
+		this.curso = curso;
+	}
+
 	public Grupo(int id_grupo, String nombre, String ciclo, String curso) {
+		super();
+		this.nombre = nombre;
+		this.ciclo = ciclo;
+		this.curso = curso;
+
+	}
+
+	// con array de alumnos
+	public Grupo(int id_grupo, String nombre, String ciclo, String curso, List<Alumno> alumnos) {
 		super();
 		this.id_grupo = id_grupo;
 		this.nombre = nombre;
 		this.ciclo = ciclo;
 		this.curso = curso;
+		this.alumnos = alumnos;
+	}
+
+	public List<Alumno> getAlumnos() {
+		return alumnos;
+	}
+
+	public void setAlumnos(List<Alumno> alumnos) {
+		this.alumnos = alumnos;
 	}
 
 	@Override

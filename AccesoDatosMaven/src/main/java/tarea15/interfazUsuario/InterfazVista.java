@@ -1,6 +1,9 @@
-package tarea15;
+package tarea15.interfazUsuario;
 
 import java.util.List;
+
+import tarea15.modelos.Alumno;
+import tarea15.modelos.Grupo;
 
 public interface InterfazVista {
 	int mostrarMenu();
@@ -16,4 +19,8 @@ public interface InterfazVista {
 	void mostrarMensaje(String mensaje);
 
 	void listarAlumnos(List<Alumno> alumnos);
+
+	String pedirPatronApellido();
+
+	Grupo pedirDatosGrupo();
 }
