@@ -1,4 +1,4 @@
-package tarea15.modelos;
+package tarea16.modelos;
 
 import java.util.List;
 import java.util.Objects;

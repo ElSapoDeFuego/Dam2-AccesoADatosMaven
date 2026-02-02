@@ -1,0 +1,22 @@
+[
+  {
+    "id_alumno": 2,
+    "nombre": "sdf",
+    "apellidos": "fsd",
+    "fechaNacimiento": "1999-02-12",
+    "email": "fd",
+    "grupo": 4,
+    "genero": "h",
+    "nombreGrupo": "dfs"
+  },
+  {
+    "id_alumno": 3,
+    "nombre": "dwadwa",
+    "apellidos": "wad",
+    "fechaNacimiento": "2000-02-13",
+    "email": "efwr",
+    "grupo": 2,
+    "genero": "h",
+    "nombreGrupo": "fgvs"
+  }
+]

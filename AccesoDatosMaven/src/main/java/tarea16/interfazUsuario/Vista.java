@@ -1,22 +1,24 @@
-package tarea15.interfazUsuario;
+package tarea16.interfazUsuario;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
-import tarea15.modelos.Alumno;
-import tarea15.modelos.Grupo;
+import tarea16.modelos.Alumno;
+import tarea16.modelos.Grupo;
 
 public class Vista implements InterfazVista {
 	private Scanner sc = new Scanner(System.in);
 
 	@Override
 	public int mostrarMenu() {
-		System.out.println("\n--- MENU ---" + "\n1. Insertar alumno" + "\n2. Insertar grupo"
-				+ "\n3. Listar alumnos (Consola)" + "\n4. Exportar a TXT" + "\n5. Importar TXT a BD"
-				+ "\n6. Modificar nombre (por ID)" + "\n7. Eliminar alumno (por ID)" + "\n8. Eliminar por curso"
-				+ "\n9. Eliminar por apellido" + "\n10. Exportar alumnos JSON" + "\n11. Importar alumnos JSON"
-				+ "\n12. Exportar grupos JSON" + "\n13. Importar grupos JSON" + "\n0. Salir");
+		System.out.println("\n--- MENU 16---" + "\n1. Insertar alumno" + "\n2. Insertar grupo" + "\n3. Listar alumnos"
+				+ "\n4. Exportar a TXT" + "\n5. Importar TXT a BD" + "\n6. Modificar nombre (por ID)"
+				+ "\n7. Eliminar alumno (por ID)" + "\n8. Eliminar por curso" + "\n9. Eliminar por apellido"
+				+ "\n10. Exportar alumnos JSON" + "\n11. Importar alumnos JSON" + "\n12. Exportar grupos JSON"
+				+ "\n13. Importar grupos JSON" + "\n14. Mostrar alumnos segun el grupo (por ID)"
+				+ "\n15. Mostrar alumno por PK" + "\n16. Cambiar de grupo a un alumno"
+				+ "\n17. Exportar grupo único JSON" + "\n0. Salir");
 		System.out.print("Pon un número: ");
 		int opcion = sc.nextInt();
 		sc.nextLine();
@@ -62,7 +64,7 @@ public class Vista implements InterfazVista {
 
 	@Override
 	public int pedirId() {
-		System.out.println("Dime el id del alumno:");
+		System.out.println("Dime el id:");
 		int id = sc.nextInt();
 		sc.nextLine();
 		return id;
@@ -77,7 +79,7 @@ public class Vista implements InterfazVista {
 	@Override
 	public String pedirCurso(List<String> cursos) {
 		System.out.println("Cursos disponibles en la BD: " + cursos);
-		System.out.print("Escribe el curso para borrar a sus alumnos: ");
+		System.out.print("Escoge el curso: ");
 		return sc.nextLine();
 	}
 
@@ -96,6 +98,26 @@ public class Vista implements InterfazVista {
 				System.out.println("NIA: " + a.getId_alumno() + " | Nombre: " + a.getNombre() + " " + a.getApellidos()
 						+ " | Género: " + a.getGenero() + " | Fecha Nac: " + a.getFechaNacimiento() + " | Email: "
 						+ a.getEmail() + " | Grupo: " + a.getNombreGrupo() + " (ID: " + a.getGrupo() + ")");
+			}
+		}
+	}
+
+	@Override
+	public void listarAlumnosResumen(List<Alumno> alumnos) {
+		System.out.println("\n--- LISTA ALUMNOS ---");
+		for (Alumno a : alumnos) {
+			System.out.println("ID: " + a.getId_alumno() + " | Nombre: " + a.getNombre());
+		}
+	}
+
+	@Override
+	public void listarGruposResumen(List<Grupo> grupos) {
+		System.out.println("\n--- LISTA GRUPOS ---");
+		if (grupos == null || grupos.isEmpty()) {
+			System.out.println("No hay grupos en la BD");
+		} else {
+			for (Grupo g : grupos) {
+				System.out.println("ID: " + g.getId_grupo() + " | Nombre: " + g.getNombre());
 			}
 		}
 	}

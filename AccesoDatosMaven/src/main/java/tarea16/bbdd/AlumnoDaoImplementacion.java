@@ -1,9 +1,6 @@
-package tarea15.bbdd;
+package tarea16.bbdd;
 
 import java.io.BufferedReader;
-import com.google.gson.JsonSerializer;
-import com.google.gson.JsonPrimitive;
-import java.time.format.DateTimeFormatter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -22,11 +19,15 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSerializer;
 
-import tarea15.modelos.Alumno;
-import tarea15.modelos.Grupo;
+import tarea16.modelos.Alumno;
+import tarea16.modelos.Grupo;
 
 import org.apache.logging.log4j.LogManager;
+import com.google.gson.JsonSerializer;
+import com.google.gson.JsonPrimitive;
+import java.time.format.DateTimeFormatter;
 
 public class AlumnoDaoImplementacion implements AlumnosDao {
 	private static AlumnoDaoImplementacion instancia;
@@ -86,7 +87,7 @@ public class AlumnoDaoImplementacion implements AlumnosDao {
 			try (ResultSet rs = pstm.getGeneratedKeys()) {
 				if (rs.next()) {
 					int id = rs.getInt(1);
-					logger.info("Grupo {} insertado con ID: {}", grupo.getNombre(), id); //
+					logger.info("Grupo {} insertado con ID: {}", grupo.getNombre(), id); 
 					return id;
 				}
 			}
@@ -101,7 +102,7 @@ public class AlumnoDaoImplementacion implements AlumnosDao {
 
 	@Override
 	public List<Alumno> obtenerTodos() {
-	
+
 		String sql = """
 				SELECT a.id_alumno, a.nombre, a.apellidos, a.fechaNacimiento, a.email, a.grupo, a.genero,
 				       g.nombre AS nom_grupo
@@ -121,7 +122,7 @@ public class AlumnoDaoImplementacion implements AlumnosDao {
 				alu.setApellidos(rs.getString("apellidos"));
 				alu.setFechaNacimiento(rs.getDate("fechaNacimiento").toLocalDate());
 				alu.setEmail(rs.getString("email"));
-				alu.setGrupo(rs.getInt("grupo")); 
+				alu.setGrupo(rs.getInt("grupo"));
 				alu.setGenero(rs.getString("genero").charAt(0));
 
 				alu.setNombreGrupo(rs.getString("nom_grupo"));
@@ -252,14 +253,14 @@ public class AlumnoDaoImplementacion implements AlumnosDao {
 
 	@Override
 	public void exportarAlumnosJSON() {
-	    Gson gson = obtenerGsonConfigurado(); 
-	    try (FileWriter fw = new FileWriter("alumnos.json")) {
-	        List<Alumno> lista = obtenerTodos();
-	        gson.toJson(lista, fw);
-	        logger.info("Exportados {} alumnos a JSON con éxito.", lista.size());
-	    } catch (IOException e) {
-	        logger.error("Error al exportar JSON de alumnos: {}", e.getMessage());
-	    }
+		Gson gson = obtenerGsonConfigurado(); // HUESAZO
+		try (FileWriter fw = new FileWriter("alumnos.json")) {
+			List<Alumno> lista = obtenerTodos();
+			gson.toJson(lista, fw);
+			logger.info("Exportados {} alumnos a JSON con éxito.", lista.size());
+		} catch (IOException e) {
+			logger.error("Error al exportar JSON de alumnos: {}", e.getMessage());
+		}
 	}
 
 	@Override
@@ -284,28 +285,28 @@ public class AlumnoDaoImplementacion implements AlumnosDao {
 	// lo pongo aqui porque se supone que hay una unica interfaz segun el enunciado
 	@Override
 	public void exportarGruposJSON() {
-	    Gson gson = obtenerGsonConfigurado(); 
-	    List<Grupo> listaGrupos = new ArrayList<>();
-	    String sql = "SELECT id_grupo, nombre, ciclo, curso FROM grupos";
+		Gson gson = obtenerGsonConfigurado(); 
+		List<Grupo> listaGrupos = new ArrayList<>();
+		String sql = "SELECT id_grupo, nombre, ciclo, curso FROM grupos";
 
-	    try (Connection conn = MyDataSource.getConnection();
-	            PreparedStatement pstm = conn.prepareStatement(sql);
-	            ResultSet rs = pstm.executeQuery()) {
+		try (Connection conn = MyDataSource.getConnection();
+				PreparedStatement pstm = conn.prepareStatement(sql);
+				ResultSet rs = pstm.executeQuery()) {
 
-	        while (rs.next()) {
-	            Grupo g = new Grupo(rs.getInt("id_grupo"), rs.getString("nombre"), 
-	                               rs.getString("ciclo"), rs.getString("curso"));
-	            g.setAlumnos(obtenerAlumnosDeUnGrupo(g.getId_grupo()));
-	            listaGrupos.add(g);
-	        }
+			while (rs.next()) {
+				Grupo g = new Grupo(rs.getInt("id_grupo"), rs.getString("nombre"), rs.getString("ciclo"),
+						rs.getString("curso"));
+				g.setAlumnos(obtenerAlumnosDeUnGrupo(g.getId_grupo()));
+				listaGrupos.add(g);
+			}
 
-	        try (FileWriter fw = new FileWriter("grupos_alumnos.json")) {
-	            gson.toJson(listaGrupos, fw);
-	            logger.info("Exportación de grupos con alumnos terminada.");
-	        }
-	    } catch (SQLException | IOException e) {
-	        logger.error("Error en el export: {}", e.getMessage());
-	    }
+			try (FileWriter fw = new FileWriter("grupos_alumnos.json")) {
+				gson.toJson(listaGrupos, fw);
+				logger.info("Exportación de grupos con alumnos terminada.");
+			}
+		} catch (SQLException | IOException e) {
+			logger.error("Error en el export: {}", e.getMessage());
+		}
 	}
 
 	@Override
@@ -362,11 +363,146 @@ public class AlumnoDaoImplementacion implements AlumnosDao {
 		}
 		return lista;
 	}
+
+	@Override
+	public List<Alumno> obtenerAlumnosPorGrupo(int idGrupo) {
+		String sql = """
+				SELECT a.id_alumno, a.nombre, a.apellidos, a.fechaNacimiento, a.email, a.grupo, a.genero,
+				               g.nombre AS nom_grupo
+				        FROM alumno a
+				        INNER JOIN grupos g ON a.grupo = g.id_grupo
+				        WHERE a.grupo = ?
+				""";
+		List<Alumno> listaAlumnos = new ArrayList<>();
+		try (Connection conn = MyDataSource.getConnection(); PreparedStatement pstm = conn.prepareStatement(sql)) {
+
+			pstm.setInt(1, idGrupo);
+			try (ResultSet rs = pstm.executeQuery()) {
+				while (rs.next()) {
+					Alumno alu = new Alumno();
+					alu.setId_alumno(rs.getInt("id_alumno"));
+					alu.setNombre(rs.getString("nombre"));
+					alu.setApellidos(rs.getString("apellidos"));
+					alu.setFechaNacimiento(rs.getDate("fechaNacimiento").toLocalDate());
+					alu.setEmail(rs.getString("email"));
+					alu.setGrupo(rs.getInt("grupo"));
+					alu.setGenero(rs.getString("genero").charAt(0));
+					// cojo el nombre del grupo del alumno, no el de grupo
+					alu.setNombreGrupo(rs.getString("nom_grupo"));
+
+					listaAlumnos.add(alu);
+				}
+			}
+			return listaAlumnos;
+		} catch (SQLException e) {
+			logger.error("Error al filtrar por grupo: {}", e.getMessage());
+			return null;
+		}
+
+	}
+
+	@Override
+	public Alumno obtenerAlumnoPorPk(int id) {
+		String sql = """
+				SELECT a.id_alumno, a.nombre, a.apellidos, a.fechaNacimiento, a.email, a.grupo, a.genero,
+				       g.nombre AS nom_grupo
+				FROM alumno a
+				LEFT JOIN grupos g ON a.grupo = g.id_grupo
+				WHERE a.id_alumno = ?
+				""";
+		try (Connection conn = MyDataSource.getConnection(); PreparedStatement pstm = conn.prepareStatement(sql)) {
+			pstm.setInt(1, id);
+			try (ResultSet rs = pstm.executeQuery()) {
+				if (rs.next()) {
+					Alumno alu = new Alumno();
+					alu.setId_alumno(rs.getInt("id_alumno"));
+					alu.setNombre(rs.getString("nombre"));
+					alu.setApellidos(rs.getString("apellidos"));
+					alu.setFechaNacimiento(rs.getDate("fechaNacimiento").toLocalDate());
+					alu.setEmail(rs.getString("email"));
+					alu.setGrupo(rs.getInt("grupo"));
+					alu.setGenero(rs.getString("genero").charAt(0));
+					alu.setNombreGrupo(rs.getString("nom_grupo"));
+					return alu;
+				}
+			}
+		} catch (SQLException e) {
+			logger.error("Error al buscar PK: {}", e.getMessage());
+		}
+		return null;
+	}
+
+	@Override
+	public List<Grupo> obtenerTodosLosGrupos() {
+		String sql = "SELECT id_grupo, nombre, ciclo, curso FROM grupos";
+		List<Grupo> lista = new ArrayList<>();
+		try (Connection conn = MyDataSource.getConnection();
+				PreparedStatement pstm = conn.prepareStatement(sql);
+				ResultSet rs = pstm.executeQuery()) {
+			while (rs.next()) {
+				lista.add(new Grupo(rs.getInt("id_grupo"), rs.getString("nombre"), rs.getString("ciclo"),
+						rs.getString("curso")));
+			}
+			return lista;
+		} catch (SQLException e) {
+			logger.error("Error al obtener grupos: {}", e.getMessage());
+			return null;
+		}
+	}
+
+	@Override
+	public int actualizarGrupoAlumno(int idAlu, int idGrupo) {
+		String sql = "UPDATE alumno SET grupo = ? WHERE id_alumno = ?";
+		try (Connection conn = MyDataSource.getConnection(); PreparedStatement pstm = conn.prepareStatement(sql)) {
+			pstm.setInt(1, idGrupo);
+			pstm.setInt(2, idAlu);
+			return pstm.executeUpdate();
+		} catch (SQLException e) {
+			logger.error("Error al actualizar grupo del alumno {}: {}", idAlu, e.getMessage());
+			return -1;
+		}
+	}
+
+	@Override
+	public boolean exportarUnicoGrupoJSON(int idGrupo) {
+	
+		Gson gson = obtenerGsonConfigurado();
+
+		Grupo grupoExport = null;
+		String sql = "SELECT id_grupo, nombre, ciclo, curso FROM grupos WHERE id_grupo = ?";
+
+		try (Connection conn = MyDataSource.getConnection(); PreparedStatement pstm = conn.prepareStatement(sql)) {
+
+			pstm.setInt(1, idGrupo);
+			try (ResultSet rs = pstm.executeQuery()) {
+				if (rs.next()) {
+					grupoExport = new Grupo();
+					grupoExport.setId_grupo(rs.getInt("id_grupo"));
+					grupoExport.setNombre(rs.getString("nombre"));
+					grupoExport.setCiclo(rs.getString("ciclo"));
+					grupoExport.setCurso(rs.getString("curso"));
+					grupoExport.setAlumnos(obtenerAlumnosDeUnGrupo(idGrupo));
+				}
+			}
+
+			if (grupoExport != null) {
+				try (FileWriter fw = new FileWriter("grupo_unico.json")) {
+					gson.toJson(grupoExport, fw);
+					logger.info("Exportación del grupo {} terminada.", idGrupo);
+					return true;
+				}
+			}
+		} catch (SQLException | IOException e) {
+			logger.error("Error en la exportacion: {}", e.getMessage());
+		}
+		return false;
+	}
+
 	private Gson obtenerGsonConfigurado() {
-	    return new GsonBuilder()
-	        .registerTypeAdapter(LocalDate.class, (JsonSerializer<LocalDate>) (src, typeOfSrc, context) -> 
-	            new JsonPrimitive(src.format(DateTimeFormatter.ISO_LOCAL_DATE)))
-	        .setPrettyPrinting()
-	        .create();
+		return new GsonBuilder()
+				.registerTypeAdapter(LocalDate.class,
+						(JsonSerializer<LocalDate>) (src, typeOfSrc,
+								context) -> new JsonPrimitive(src.format(DateTimeFormatter.ISO_LOCAL_DATE)))
+				.setPrettyPrinting().create();
 	}
 }
